@@ -7,6 +7,7 @@ import hamburgericon from '../assets/hamburgericon.svg';
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [logged,setLogged]=useState(localStorage.getItem('token'));
+    const [role,setRole]=useState(localStorage.getItem('role'));
     const dropdownRef = useRef(null);
     const navigate = useNavigate();
 
@@ -61,7 +62,9 @@ const Navbar = () => {
 
     useEffect(()=>{
         setLogged(localStorage.getItem('token'));
-    },[localStorage.getItem('token')])
+        setRole(localStorage.getItem('role'));
+        console.log(role);
+    },[localStorage.getItem('token'),localStorage.getItem('role')]);
 
     return (
         <div>
@@ -86,8 +89,12 @@ const Navbar = () => {
                             <div className="hidden md:flex space-x-10">
                                 <button onClick={handleGoHome} className="text-black cursor-pointer hover:text-gray-700 font-extrabold">HOME</button>
                                 <button onClick={handleAbout} className="text-black cursor-pointer hover:text-gray-700 font-extrabold">ABOUT US</button>
-                                <button onClick={handleNewAppl} className="text-black cursor-pointer hover:text-gray-700 font-extrabold">NEW APPLICATION</button>
-                                <button onClick={handlePrevAppl} className="text-black cursor-pointer hover:text-gray-700 font-extrabold">PENDING/PREVIOUS APPLICATION</button>
+                                {role==='USER' && (
+                                    <button onClick={handleNewAppl} className="text-black cursor-pointer hover:text-gray-700 font-extrabold">NEW APPLICATION</button>
+                                )}
+                                {role==='USER' && (
+                                    <button onClick={handlePrevAppl} className="text-black cursor-pointer hover:text-gray-700 font-extrabold">PENDING/PREVIOUS APPLICATION</button>
+                                )}
                                 <button onClick={handleForm} className="text-black cursor-pointer hover:text-gray-700 font-extrabold">FORMS</button>
                             </div>
                             <div className="md:hidden flex">
