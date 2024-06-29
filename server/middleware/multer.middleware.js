@@ -19,7 +19,8 @@ const upload=multer({
             ext !== ".png" &&
             ext !== ".mp4" &&
             ext !== ".pdf" &&
-            ext !== ".txt"
+            ext !== ".txt" &&
+            ext !== ".docx"
             
         ){
             cb(new Error("unsupported file type ! ${ext}"),false);

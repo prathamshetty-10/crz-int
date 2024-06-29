@@ -202,10 +202,12 @@ const uploadchalan=async(req,res,next)=>{
 const submitform=async(req,res,next)=>{
     try{
 
-        const {name,email,addr,sur_num,taluk,village,form_type,ph_no,pi1,pi2,pi3,pi4,su1,su2,su3,su4}=req.body;
-        
+        const {name,email,address,surveyNo,taluk,village,type,ph_no,pi1,pi2,pi3,pi4,su1,su2,su3,su4}=req.body;
+        const addr=address
+        const sur_num=surveyNo;
+        const form_type=type;
         if(!name|| !email||!addr||!sur_num||!taluk||!village||!form_type||!ph_no||!pi1||!su1||!pi2||!su2||!pi3||!su3||!pi4||!su4){
-            res.status(500).json({
+            return res.status(500).json({
                 success:false,
                 message:"fill all fields"
             })
@@ -218,7 +220,7 @@ const submitform=async(req,res,next)=>{
         data.then(async(res1)=>{
             if(res1){
                 
-                res.status(200).json({
+                return res.status(200).json({
                     success:true,
                     message:"user form submitted successfully"
                 })
@@ -226,9 +228,9 @@ const submitform=async(req,res,next)=>{
             else{
                 
 
-                res.status(500).json({
+                return res.status(500).json({
                     success:false,
-                    message:"OTP wrong please re send otp"
+                    message:"not submitted"
                 })
             };
          }

@@ -1,20 +1,89 @@
-import React, { useState } from 'react';
-
+import React, { useEffect, useState } from 'react';
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast'
 export default function NewAppl() {
+  const navigate=useNavigate();
+  const [ph_no,SetPhone]=useState(localStorage.getItem('ph_no'))
   const [formData, setFormData] = useState({
     name: '',
+    ph_no:ph_no,
     email: '',
     address: '',
     surveyNo: '',
     taluk: '',
     village: '',
     type: '',
-    uploadForm: null,
-    uploadRTC: null,
-    uploadSurveySketch: null,
-    challan: null,
+    form1: '',
+    pi1:'',
+    su1:'',
+    rtc: '',
+    pi2:'',
+    su2:'',
+    ss: '',
+    pi3:'',
+    su3:'',
+    chalan:'',
+    pi4:'',
+    su4:'',
+    
+
+    chalan:'',
     agree: false,
   });
+  function getImage1(e){
+    e.preventDefault();
+    const uploadedImage=e.target.files[0];
+    if(uploadedImage){
+        setFormData({
+            ...formData,
+            form1:uploadedImage
+        });
+        
+
+    }
+
+}
+function getImage2(e){
+  e.preventDefault();
+  const uploadedImage=e.target.files[0];
+  if(uploadedImage){
+      setFormData({
+          ...formData,
+          rtc:uploadedImage
+      });
+      
+
+  }
+
+}
+function getImage3(e){
+  e.preventDefault();
+  const uploadedImage=e.target.files[0];
+  if(uploadedImage){
+      setFormData({
+          ...formData,
+          ss:uploadedImage
+      });
+      
+
+  }
+
+}
+function getImage4(e){
+  e.preventDefault();
+  const uploadedImage=e.target.files[0];
+  if(uploadedImage){
+      setFormData({
+          ...formData,
+          chalan:uploadedImage
+      });
+      
+
+  }
+
+}
+
 
   const [errors, setErrors] = useState({});
 
@@ -28,6 +97,7 @@ export default function NewAppl() {
       setFormData({ ...formData, [name]: value });
     }
   };
+  
 
   const validateForm = () => {
     let errors = {};
@@ -38,21 +108,85 @@ export default function NewAppl() {
     if (!formData.taluk) errors.taluk = 'Taluk is required';
     if (!formData.village) errors.village = 'Village is required';
     if (!formData.type) errors.type = 'Type is required';
-    if (!formData.uploadForm) errors.uploadForm = 'Upload form - 1 is required';
-    if (!formData.uploadRTC) errors.uploadRTC = 'Upload RTC is required';
-    if (!formData.uploadSurveySketch) errors.uploadSurveySketch = 'Upload survey sketch is required';
-    if (!formData.challan) errors.challan = 'Challan for Rs.200/- is required';
+    if (!formData.form1) errors.uploadForm = 'Upload form - 1 is required';
+    if (!formData.rtc) errors.uploadRTC = 'Upload RTC is required';
+    if (!formData.ss) errors.uploadSurveySketch = 'Upload survey sketch is required';
+    if (!formData.chalan) errors.challan = 'Challan for Rs.200/- is required';
     if (!formData.agree) errors.agree = 'You must agree that the documents are true to the best of your knowledge and belief';
 
     setErrors(errors);
     return Object.keys(errors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
     if (validateForm()) {
-      // form submission logic
-      console.log('Form submitted', formData);
+      const formData2=new FormData();
+        formData2.append("form1",formData.form1);
+        formData2.append("ph_no",formData.ph_no);
+        
+      
+        
+      const response1=await axios.post('/api/form/upload/form1',formData2);
+      
+      if(response1.status==200){
+        console.log('reached here');
+        setFormData({...formData,pi1:response1.data.public_id})
+        setFormData({...formData,su1:response1.data.secure_url})
+        const formData3=new FormData();
+        formData3.append("rtc",formData.rtc);
+        formData3.append("ph_no",formData.ph_no);
+      const response2=await axios.post('/api/form/upload/rtc',formData3);
+      if(response2.status==200){
+        setFormData({...formData,pi2:response1.data.public_id})
+        setFormData({...formData,su2:response1.data.secure_url})
+      const formData4=new FormData();
+        formData4.append("ss",formData.ss);
+        formData4.append("ph_no",formData.ph_no);
+      
+      
+
+      const response3=await axios.post('/api/form/upload/ss',formData4);
+      if(response3.status==200){
+        setFormData({...formData,pi3:response1.data.public_id})
+        setFormData({...formData,su3:response1.data.secure_url})
+      const formData5=new FormData();
+        formData5.append("chalan",formData.chalan);
+        formData5.append("ph_no",formData.ph_no);
+      
+      
+    
+      const response4=await axios.post('/api/form/upload/chalan',formData5);
+      if(response4.status==200){
+        setFormData({...formData,pi4:response1.data.public_id})
+        setFormData({...formData,su4:response1.data.secure_url})
+      
+      {/*const formData6=new FormData();
+      formData6.append("name",formData.name);
+        formData6.append("email",formData.email);
+        formData6.append("addr",formData.address);
+        formData6.append("sur_num",formData.surveyNo);
+        formData6.append("taluk",formData.taluk);
+        formData6.append("village",formData.village);
+        formData6.append("form_type",formData.type);
+        formData6.append("pi1",formData.pi1);
+        formData6.append("pi2",formData.pi2);
+        formData6.append("pi3",formData.pi3);
+        formData6.append("pi4",formData.pi4);
+        formData6.append("su1",formData.su1);
+        formData6.append("su2",formData.su2);
+        formData6.append("su3",formData.su3);
+        formData6.append("su4",formData.su4);
+        formData6.append("ph_no",formData.ph_no);
+        console.log(formData6);*/}
+        console.log(formData);
+      const response5=await axios.post('/api/form/submit',formData);
+      if(response5.status==200){toast.success(response5.data.message);navigate('/');}
+      else toast.error(response5.data.message);
+
+      
+      }}}}
+      
     }
   };
 
@@ -161,8 +295,8 @@ export default function NewAppl() {
             <label className="block mb-2">Upload form - 1</label>
             <input
               type="file"
-              name="uploadForm"
-              onChange={handleChange}
+              name="form1"
+              onChange={getImage1}
               className={`w-full p-2 border ${errors.uploadForm ? 'border-red-500' : 'border-gray-300'}`}
             />
             {errors.uploadForm && <p className="text-red-500 text-sm">{errors.uploadForm}</p>}
@@ -172,8 +306,8 @@ export default function NewAppl() {
             <label className="block mb-2">Upload RTC</label>
             <input
               type="file"
-              name="uploadRTC"
-              onChange={handleChange}
+              name="rtc"
+              onChange={getImage2}
               className={`w-full p-2 border ${errors.uploadRTC ? 'border-red-500' : 'border-gray-300'}`}
             />
             {errors.uploadRTC && <p className="text-red-500 text-sm">{errors.uploadRTC}</p>}
@@ -183,8 +317,8 @@ export default function NewAppl() {
             <label className="block mb-2">Upload survey sketch</label>
             <input
               type="file"
-              name="uploadSurveySketch"
-              onChange={handleChange}
+              name="ss"
+              onChange={getImage3}
               className={`w-full p-2 border ${errors.uploadSurveySketch ? 'border-red-500' : 'border-gray-300'}`}
             />
             {errors.uploadSurveySketch && <p className="text-red-500 text-sm">{errors.uploadSurveySketch}</p>}
@@ -194,8 +328,8 @@ export default function NewAppl() {
             <label className="block mb-2">Challan for Rs.200/-</label>
             <input
               type="file"
-              name="challan"
-              onChange={handleChange}
+              name="chalan"
+              onChange={getImage4}
               className={`w-full p-2 border ${errors.challan ? 'border-red-500' : 'border-gray-300'}`}
             />
             {errors.challan && <p className="text-red-500 text-sm">{errors.challan}</p>}

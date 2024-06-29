@@ -40,7 +40,7 @@ const login=async(req,res,next)=>{
                 //     message:"user logged in successfully",
                 //     token
                 // })
-                res.json({token});
+                res.json({token,ph_no,name});
             }
             else{
                 const pool1=await sql.connect(config);

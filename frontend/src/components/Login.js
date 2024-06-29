@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import usericon from '../assets/usericon.svg';
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
     const [name, setName] = useState('');
@@ -8,6 +9,7 @@ const Login = () => {
     const [otp, setOtp] = useState('');
     const [otpSent, setOtpSent] = useState(false);
     const [errors, setErrors] = useState({});
+    const navigate=useNavigate();
 
     const handleOTP = async () => {
         if (!name || !ph_no) {
@@ -58,9 +60,14 @@ const Login = () => {
                 throw new Error('Failed to log in');
             }
              const token  = response.data.token;
+             const name1=response.data.name;
+             const ph_no1=response.data.ph_no;
              localStorage.setItem('token', token);
-
+             localStorage.setItem('name', name1);
+             localStorage.setItem('ph_no', ph_no1);
+            
             console.log('Logged in successfully');
+            navigate('/');
         } catch (error) {
             console.error('Error logging in:', error);
             setErrors({
