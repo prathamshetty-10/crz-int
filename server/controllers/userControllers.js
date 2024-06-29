@@ -28,17 +28,19 @@ const login=async(req,res,next)=>{
         data.then(async(res1)=>{
             if(res1.recordset[0].otp==otp){
                 const token=generateJWTToken(ph_no,res1.recordset[0].role,name);
-                res.cookie('token',token,cookieoptions);
+                //res.cookie('token',token,cookieoptions);
 
                 const pool1=await sql.connect(config);
                 const data1=pool.request().query(`delete from user_tb where ph_no='${ph_no}'`)
                 data1.then(res1=>{
                     console.log('deleted entry as login complete');
                 })
-                res.status(200).json({
-                    success:true,
-                    message:"user logged in successfully"
-                })
+                // res.status(200).json({
+                //     success:true,
+                //     message:"user logged in successfully",
+                //     token
+                // })
+                res.json({token});
             }
             else{
                 const pool1=await sql.connect(config);

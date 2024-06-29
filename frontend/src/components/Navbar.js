@@ -6,6 +6,7 @@ import hamburgericon from '../assets/hamburgericon.svg';
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const [logged,setLogged]=useState(localStorage.getItem('token'));
     const dropdownRef = useRef(null);
     const navigate = useNavigate();
 
@@ -14,8 +15,7 @@ const Navbar = () => {
     };
 
     const handleLogout = () => {
-        // localStorage.removeItem('token')
-        // setUser(null)
+        localStorage.removeItem('token');
         navigate('/');
     };
 
@@ -55,6 +55,10 @@ const Navbar = () => {
     const handleGoHome = () => {
         navigate('/');
     };
+
+    useEffect(()=>{
+        setLogged(localStorage.getItem('token'));
+    },[localStorage.getItem('token')])
 
     return (
         <div>
@@ -100,12 +104,12 @@ const Navbar = () => {
                             </div>
                         </div>
                     </div>
-                    {localStorage.getItem('token') && (
+                    {logged && (
                         <div className="text-white bg-blue-600  rounded-lg relative top-[-1.5rem]">
                             <button onClick={handleLogout} className="lg:text-lg text-[0.5rem] p-2 font-extraboldcursor-pointer whitespace-nowrap">Sign Out</button>
                         </div>
                     )}
-                    {!localStorage.getItem('token') && (
+                    {!logged && (
                         <div className="text-white bg-blue-600 rounded-lg relative top-[-1.5rem]">
                             <button onClick={handleLogin} className="lg:text-lg text-[0.5rem] p-2 font-extrabold cursor-pointer whitespace-nowrap">Sign In</button>
                         </div>

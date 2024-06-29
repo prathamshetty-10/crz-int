@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
 import usericon from '../assets/usericon.svg';
+import axios from 'axios'
 
 const Login = () => {
     const [name, setName] = useState('');
-    const [mobile, setMobile] = useState('');
+    const [ph_no, setph_no] = useState('');
     const [otp, setOtp] = useState('');
     const [otpSent, setOtpSent] = useState(false);
     const [errors, setErrors] = useState({});
 
     const handleOTP = async () => {
-        if (!name || !mobile) {
+        if (!name || !ph_no) {
             setErrors({
                 name: !name ? 'Name is required' : '',
-                mobile: !mobile ? 'Mobile number is required' : ''
+                ph_no: !ph_no ? 'ph_no number is required' : ''
             });
             return;
         }
@@ -23,7 +24,7 @@ const Login = () => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ name, mobile })
+                body: JSON.stringify({ name, ph_no })
             });
 
             if (!response.ok) {
@@ -49,19 +50,15 @@ const Login = () => {
         }
 
         try {
-            const response = await fetch('/api/user/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ name, mobile, otp })
+            const response = await axios.post('/api/user/login', {
+                name,ph_no,otp
             });
 
-            if (!response.ok) {
+            if (!response.data) {
                 throw new Error('Failed to log in');
             }
-            const { token } = response.cookie;
-            localStorage.setItem('token', token);
+             const token  = response.data.token;
+             localStorage.setItem('token', token);
 
             console.log('Logged in successfully');
         } catch (error) {
@@ -93,15 +90,15 @@ const Login = () => {
                         {errors.name && <p className="text-red-600 mt-2">{errors.name}</p>}
                     </div>
                     <div className="mb-4">
-                        <label className="block text-black mb-2" htmlFor="mobile">Mobile No.</label>
+                        <label className="block text-black mb-2" htmlFor="ph_no">ph_no No.</label>
                         <div className='flex'>
                             <input
                                 type="text"
-                                id="mobile"
-                                className={`w-full px-4 py-2 border bg-gray-200 rounded-lg focus:outline-none focus:ring-2 ${errors.mobile ? 'border-red-600 focus:ring-red-600' : 'focus:ring-blue-600'}`}
-                                value={mobile}
-                                onChange={(e) => setMobile(e.target.value)}
-                                placeholder="Enter your Mobile Number"
+                                id="ph_no"
+                                className={`w-full px-4 py-2 border bg-gray-200 rounded-lg focus:outline-none focus:ring-2 ${errors.ph_no ? 'border-red-600 focus:ring-red-600' : 'focus:ring-blue-600'}`}
+                                value={ph_no}
+                                onChange={(e) => setph_no(e.target.value)}
+                                placeholder="Enter your ph_no Number"
                                 required
                             />
                             <button
@@ -112,7 +109,7 @@ const Login = () => {
                                 Send OTP
                             </button>
                         </div>
-                        {errors.mobile && <p className="text-red-600 mt-2">{errors.mobile}</p>}
+                        {errors.ph_no && <p className="text-red-600 mt-2">{errors.ph_no}</p>}
                     </div>
                     <div className="mb-4">
                         <label className="block text-gray-700 mb-2" htmlFor="otp">Enter OTP</label>
