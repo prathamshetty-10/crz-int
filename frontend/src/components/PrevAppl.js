@@ -1,31 +1,7 @@
 import React from 'react';
 
 const applications = [
-  {
-    id: 'CRZ17164424342179845780894',
-    status: 'rejected',
-    pdfPath: '/path/to/rejected.pdf'
-  },
-  {
-    id: 'CRZ17164424342179845780895',
-    status: 'accepted',
-    pdfPath: '/path/to/accepted.pdf'
-  },
-  {
-    id: 'CRZ17164424342179845780896',
-    status: 'pending',
-    pdfPath: '/path/to/pending.pdf'
-  },
-  {
-    id: 'CRZ17164424342179845780897',
-    status: 'pending',
-    pdfPath: '/path/to/pending.pdf'
-  },
-  {
-    id: 'CRZ17164424342179845780898',
-    status: 'accepted',
-    pdfPath: '/path/to/accepted.pdf'
-  }
+  
 ];
 
 export default function PrevAppl() {

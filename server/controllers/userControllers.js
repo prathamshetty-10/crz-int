@@ -27,6 +27,7 @@ const login=async(req,res,next)=>{
         const data=pool.request().query(`select * from user_tb where ph_no='${ph_no}'`);
         data.then(async(res1)=>{
             if(res1.recordset[0].otp==otp){
+                const role=res1.recordset[0].role;
                 const token=generateJWTToken(ph_no,res1.recordset[0].role,name);
                 //res.cookie('token',token,cookieoptions);
 
@@ -40,7 +41,7 @@ const login=async(req,res,next)=>{
                 //     message:"user logged in successfully",
                 //     token
                 // })
-                res.json({token,ph_no,name});
+                res.json({token,ph_no,name,role});
             }
             else{
                 const pool1=await sql.connect(config);
