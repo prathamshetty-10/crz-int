@@ -18,6 +18,7 @@ const Navbar = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('name');
         localStorage.removeItem('ph_no');
+        localStorage.removeItem('role');
         navigate('/');
     };
 
