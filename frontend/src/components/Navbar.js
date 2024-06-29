@@ -89,10 +89,10 @@ const Navbar = () => {
                             <div className="hidden md:flex space-x-10">
                                 <button onClick={handleGoHome} className="text-black cursor-pointer hover:text-gray-700 font-extrabold">HOME</button>
                                 <button onClick={handleAbout} className="text-black cursor-pointer hover:text-gray-700 font-extrabold">ABOUT US</button>
-                                {role==='USER' && (
+                                {role==='ADMIN' && (
                                     <button onClick={handleNewAppl} className="text-black cursor-pointer hover:text-gray-700 font-extrabold">NEW APPLICATION</button>
                                 )}
-                                {role==='USER' && (
+                                {role==='ADMIN' && (
                                     <button onClick={handlePrevAppl} className="text-black cursor-pointer hover:text-gray-700 font-extrabold">PENDING/PREVIOUS APPLICATION</button>
                                 )}
                                 <button onClick={handleForm} className="text-black cursor-pointer hover:text-gray-700 font-extrabold">FORMS</button>

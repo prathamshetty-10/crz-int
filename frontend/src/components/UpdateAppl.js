@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios'
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast'
-export default function NewAppl() {
+export default function UpdateAppl() {
   const navigate=useNavigate();
   const [ph_no,SetPhone]=useState(localStorage.getItem('ph_no'))
+  const {state}=useLocation();
+  const form=state;
+  console.log(form);
   const [formData, setFormData] = useState({
-    name: '',
+    name: form.name,
     ph_no:ph_no,
-    email: '',
-    address: '',
-    surveyNo: '',
-    taluk: '',
-    village: '',
-    type: '',
+    email: form.email,
+    address: form.addr,
+    surveyNo: form.sur_num,
+    taluk: form.taluk,
+    village: form.village,
+    type: form.form_type,
     form1: '',
     pi1:'',
     su1:'',
@@ -26,7 +29,7 @@ export default function NewAppl() {
     chalan:'',
     pi4:'',
     su4:'',
-    reasonRejection:'null',
+    reasonRejection:form.reasonRejection,
     
 
     chalan:'',
@@ -163,24 +166,7 @@ function getImage4(e){
         formData.pi4=response4.data.public_id;
         formData.su4=response4.data.secure_url;
       
-      {/*const formData6=new FormData();
-      formData6.append("name",formData.name);
-        formData6.append("email",formData.email);
-        formData6.append("addr",formData.address);
-        formData6.append("sur_num",formData.surveyNo);
-        formData6.append("taluk",formData.taluk);
-        formData6.append("village",formData.village);
-        formData6.append("form_type",formData.type);
-        formData6.append("pi1",formData.pi1);
-        formData6.append("pi2",formData.pi2);
-        formData6.append("pi3",formData.pi3);
-        formData6.append("pi4",formData.pi4);
-        formData6.append("su1",formData.su1);
-        formData6.append("su2",formData.su2);
-        formData6.append("su3",formData.su3);
-        formData6.append("su4",formData.su4);
-        formData6.append("ph_no",formData.ph_no);
-        console.log(formData6);*/}
+      
       const response5=await axios.post('/api/form/submit',formData);
       if(response5.status==200){toast.success(response5.data.message);navigate('/');}
       else toast.error(response5.data.message);
@@ -194,7 +180,8 @@ function getImage4(e){
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100 py-10 text-black">
       <div className="bg-blue-50 p-8 shadow-lg lg:w-2/5 w-[90%]">
-        <h1 className="text-xl mb-6 text-center ">New Application</h1>
+        <h1 className="text-xl mb-6 text-center">Update Application</h1>
+        <h1 className='text-xl mb-6 text-center break-words'>Reason for Rejection:{form.reasonRejection}</h1>
         <form onSubmit={handleSubmit} className=''>
           <div className="mb-4">
             <label className="block mb-2">Name of Applicant/Proponent</label>
@@ -203,13 +190,13 @@ function getImage4(e){
               name="name"
               value={formData.name}
               onChange={handleChange}
-              className={`w-full p-2 border ${errors.name ? 'border-red-500' : 'border-gray-300'} bg-yellow-200 text-black`}
+              className={`w-full p-2 border ${errors.name ? 'border-red-500' : 'border-gray-300'}  bg-yellow-200 text-black`}
             />
             {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
           </div>
 
           <div className="mb-4">
-            <label className="block mb-2 ">Email id</label>
+            <label className="block mb-2">Email id</label>
             <input
               type="email"
               name="email"
@@ -265,7 +252,7 @@ function getImage4(e){
             <select
               name="village"
               value={formData.village}
-              onChange={handleChange}
+              onChange={handleChange} 
               className={`w-full p-2 border ${errors.village ? 'border-red-500' : 'border-gray-300'}  bg-yellow-200 text-black`}
             >
               <option value="">Select Village</option>
@@ -353,7 +340,7 @@ function getImage4(e){
 
           <div className="text-center">
             <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700">
-              Submit
+              ReSubmit
             </button>
           </div>
         </form>

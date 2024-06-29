@@ -202,7 +202,7 @@ const uploadchalan=async(req,res,next)=>{
 const submitform=async(req,res,next)=>{
     try{
 
-        const {name,email,address,surveyNo,taluk,village,type,ph_no,pi1,pi2,pi3,pi4,su1,su2,su3,su4}=req.body;
+        const {name,email,address,surveyNo,taluk,village,type,ph_no,pi1,pi2,pi3,pi4,su1,su2,su3,su4,reasonRejection}=req.body;
         const addr=address
         const sur_num=surveyNo;
         const form_type=type;
@@ -216,7 +216,7 @@ const submitform=async(req,res,next)=>{
         const pool=await sql.connect(config);
         const form_id=new Date().toLocaleString();
         
-        const data=pool.request().query(`insert into form_tb values('${ph_no}','${name}','${addr}','${sur_num}','${taluk}','${village}','${form_type}','${pi1}','${su1}','${pi2}','${su2}','${pi3}','${su3}','${pi4}','${su4}','${email}','${form_id}','${status}','null','null','null')`);
+        const data=pool.request().query(`insert into form_tb values('${ph_no}','${name}','${addr}','${sur_num}','${taluk}','${village}','${form_type}','${pi1}','${su1}','${pi2}','${su2}','${pi3}','${su3}','${pi4}','${su4}','${email}','${form_id}','${status}','null','${reasonRejection}','null')`);
         data.then(async(res1)=>{
             if(res1){
                 
@@ -251,7 +251,7 @@ const getallformsnull=async(req,res,next)=>{
         const {ph_no}=req.body;
         
         if(!ph_no){
-            res.status(500).json({
+            return res.status(500).json({
                 success:false,
                 message:"send phone number"
             })
@@ -260,11 +260,11 @@ const getallformsnull=async(req,res,next)=>{
         const pool=await sql.connect(config);
         
         
-        const data=pool.request().query(`select * from form_tb where ph_no='${ph_no}' and status='null'`);
+        const data=pool.request().query(`select * from form_tb where ph_no='${ph_no}'`);
         data.then(async(res1)=>{
             if(res1){
                 
-                res.status(200).json({
+                return res.status(200).json({
                     success:true,
                     message:"all unattended forms returned",
                     forms:res1.recordset
@@ -273,7 +273,7 @@ const getallformsnull=async(req,res,next)=>{
             else{
                 
 
-                res.status(500).json({
+                return res.status(500).json({
                     success:false,
                     message:"error in getting all forms"
                 })
@@ -476,6 +476,7 @@ const agetallformsrej=async(req,res,next)=>{
     }
 
 };
+//api calls to get resubmitted forms
 const agetallformsrejSub=async(req,res,next)=>{
     try{
         const pool=await sql.connect(config);

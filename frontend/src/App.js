@@ -9,6 +9,8 @@ import Login from './components/Login';
 import Navbar from './components/Navbar';
 import NewAppl from './components/NewAppl';
 import PrevAppl from './components/PrevAppl';
+import ViewAppl from './components/ViewAppl';
+import UpdateAppl from './components/UpdateAppl';
 
 function App() {
   return (
@@ -47,6 +49,18 @@ function App() {
             path='/prevappl'
             element={
               <PrevAppl />
+            }
+          />
+          <Route
+            path='/viewappl'
+            element={
+              <ViewAppl />
+            }
+          />
+          <Route
+            path='/updateappl'
+            element={
+              <UpdateAppl />
             }
           />
           <Route
