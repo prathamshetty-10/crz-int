@@ -62,9 +62,12 @@ const Login = () => {
              const token  = response.data.token;
              const name1=response.data.name;
              const ph_no1=response.data.ph_no;
+             const role=response.data.role;
              localStorage.setItem('token', token);
              localStorage.setItem('name', name1);
              localStorage.setItem('ph_no', ph_no1);
+             localStorage.setItem('role',role);
+            
             
             console.log('Logged in successfully');
             navigate('/');
