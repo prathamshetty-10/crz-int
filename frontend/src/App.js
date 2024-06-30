@@ -12,6 +12,7 @@ import ImpForms from './components/ImpForms';
 import Login from './components/Login';
 import Navbar from './components/Navbar';
 import NewAppl from './components/NewAppl';
+import NotFound from './components/NotFound';
 import PrevAppl from './components/PrevAppl';
 import ResidentialConstruction from './components/ResidentialConstruction';
 import ResidentialConversion from './components/ResidentialConversion';
@@ -36,7 +37,7 @@ function App() {
           <Navbar />
         </div>
         <Routes>
-          {role!=='ADMIN' ? (
+          {role==='ADMIN' ? (
             <>
               <Route
                 path="/login"
@@ -121,6 +122,7 @@ function App() {
               />
             </>
           )}
+          <Route path="*" element={<NotFound/>} />
         </Routes>
         <Footer />
       </Router>
