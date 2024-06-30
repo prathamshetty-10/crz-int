@@ -37,7 +37,7 @@ function App() {
           <Navbar />
         </div>
         <Routes>
-          {role==='ADMIN' ? (
+          {role!=='ADMIN' ? (
             <>
               <Route
                 path="/login"
