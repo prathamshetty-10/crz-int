@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const applications = [
     { id: 1, title: 'App 1', status: 'pending' },
     { id: 2, title: 'App 2', status: 'rejected' },
     { id: 3, title: 'App 3', status: 'accepted' },
-    { id: 4, title: 'App 4', status: 'accepted' },
+    { id: 4, title: 'App 4', status: 'rejected' },
 ];
 
-export default function CommercialConversion(){
+export default function CommercialConversion() {
+    const navigate = useNavigate()
     const [filter, setFilter] = useState('pending');
     const [filteredApplications, setFilteredApplications] = useState([]);
 
@@ -51,7 +53,9 @@ export default function CommercialConversion(){
                     <ul>
                         {filteredApplications.map(app => (
                             <li key={app.id} className="bg-white p-4 mb-2 rounded shadow">
-                                {app.title}
+                                <div className='p-5 bg-gray-100 cursor-pointer' onClick={()=>navigate('/urmom')}>
+                                    {app.title}
+                                </div>
                             </li>
                         ))}
                     </ul>

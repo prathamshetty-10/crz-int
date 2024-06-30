@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const applications = [
     { id: 1, title: 'App 1', status: 'pending' },
@@ -7,7 +8,8 @@ const applications = [
     { id: 4, title: 'App 4', status: 'rejected' },
 ];
 
-export default function CommercialConstruction (){
+export default function CommercialConstruction() {
+    const navigate = useNavigate()
     const [filter, setFilter] = useState('pending');
     const [filteredApplications, setFilteredApplications] = useState([]);
 
@@ -51,7 +53,9 @@ export default function CommercialConstruction (){
                     <ul>
                         {filteredApplications.map(app => (
                             <li key={app.id} className="bg-white p-4 mb-2 rounded shadow">
-                                {app.title}
+                                <div className='p-5 bg-gray-100 cursor-pointer' onClick={()=>navigate('/urmom')}>
+                                    {app.title}
+                                </div>
                             </li>
                         ))}
                     </ul>
