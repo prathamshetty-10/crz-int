@@ -1,13 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import crossmark from '../assets/crossmark.svg';
 import logo from '../assets/govtlogo.png';
 import hamburgericon from '../assets/hamburgericon.svg';
 import toast from 'react-hot-toast';
 const Navbar = () => {
+    const { t } = useTranslation();
     const [isOpen, setIsOpen] = useState(false);
-    const [logged,setLogged]=useState(localStorage.getItem('token'));
-    const [role,setRole]=useState(localStorage.getItem('role'));
+    const [logged, setLogged] = useState(localStorage.getItem('token'));
+    const [role, setRole] = useState('ADMIN');//useState(localStorage.getItem('role'));
     const dropdownRef = useRef(null);
     const navigate = useNavigate();
 
@@ -53,19 +55,31 @@ const Navbar = () => {
         navigate('/newappl');
     };
 
+    const handleViewAppl = () => {
+        navigate('/viewappl');
+    }
+
+    const handleUpdateAppl = () => {
+        navigate('/updateappl');
+    }
+
     const handleAbout = () => {
         navigate('/about');
     };
+
+    const handleAdmin = () => {
+        navigate('/admin');
+    }
 
     const handleGoHome = () => {
         navigate('/');
     };
 
-    useEffect(()=>{
+    useEffect(() => {
         setLogged(localStorage.getItem('token'));
-        setRole(localStorage.getItem('role'));
-        console.log(role);
-    },[localStorage.getItem('token'),localStorage.getItem('role')]);
+        setRole('ADMIN');
+        //setRole(localStorage.getItem('role'));
+    }, [localStorage.getItem('token'), localStorage.getItem('role')]);
 
     return (
         <div>
@@ -79,28 +93,38 @@ const Navbar = () => {
                             >
                                 <div className='flex flex-row lg:absolute'>
                                     <img src={logo} className="lg:h-16 h-4" alt="LOGO" />
-                                    <p className='lg:py-5 px-1 text-black lg:text-lg text-[0.7rem] font-semibold'>UDUPI DISTRICT</p>
+                                    <p className='lg:py-5 px-1 text-black lg:text-lg text-[0.7rem] font-semibold'>{t('udupiDistrict')}</p>
                                 </div>
                                 <span className="lg:block hidden lg:text-center lg:w-full lg:text-4xl text-lg font-bold text-black whitespace-nowrap">
-                                    Coastal Regulation Zone
+                                    {t('coastalRegulationZone')}
                                 </span>
                             </a>
                         </div>
                         <div className="flex items-center lg:pt-5 pt-2">
                             <div className="hidden md:flex space-x-10">
-                                <button onClick={handleGoHome} className="text-black cursor-pointer hover:text-gray-700 font-extrabold">HOME</button>
-                                <button onClick={handleAbout} className="text-black cursor-pointer hover:text-gray-700 font-extrabold">ABOUT US</button>
-                                {role==='USER' && (
-                                    <button onClick={handleNewAppl} className="text-black cursor-pointer hover:text-gray-700 font-extrabold">NEW APPLICATION</button>
+                                {role !== 'ADMIN' ? (
+                                    <>
+                                        <button onClick={handleGoHome} className="text-black cursor-pointer hover:text-gray-700 font-extrabold">{t('home')}</button>
+                                        <button onClick={handleAbout} className="text-black cursor-pointer hover:text-gray-700 font-extrabold">{t('aboutUs')}</button>
+                                        <button onClick={handleNewAppl} className="text-black cursor-pointer hover:text-gray-700 font-extrabold">{t('newApplication')}</button>
+                                        <button onClick={handlePrevAppl} className="text-black cursor-pointer hover:text-gray-700 font-extrabold">{t('pendingPreviousApplication')}</button>
+                                        {/* <button onClick={handleViewAppl} className="text-black cursor-pointer hover:text-gray-700 font-extrabold">{t('viewApplication')}</button>
+                                        <button onClick={handleUpdateAppl} className="text-black cursor-pointer hover:text-gray-700 font-extrabold">{t('updateApplication')}</button> */}
+                                        <button onClick={handleForm} className="text-black cursor-pointer hover:text-gray-700 font-extrabold">{t('forms')}</button>
+                                    </>
+                                ) : (
+                                    <>
+                                        <button onClick={handleAdmin} className="text-black cursor-pointer hover:text-gray-700 font-extrabold">Home</button>
+                                        <button onClick={() => navigate('/resiConversion')} className="text-black cursor-pointer hover:text-gray-700 font-extrabold">Residential Conversion</button>
+                                        <button onClick={() => navigate('/resiConstruction')} className="text-black cursor-pointer hover:text-gray-700 font-extrabold">Residential Construction</button>
+                                        <button onClick={() => navigate('/commConversion')} className="text-black cursor-pointer hover:text-gray-700 font-extrabold">Commercial Conversion</button>
+                                        <button onClick={() => navigate('/commConstruction')} className="text-black cursor-pointer hover:text-gray-700 font-extrabold">Commercial Construction</button>
+                                    </>
                                 )}
-                                {role==='USER' && (
-                                    <button onClick={handlePrevAppl} className="text-black cursor-pointer hover:text-gray-700 font-extrabold">PENDING/PREVIOUS APPLICATION</button>
-                                )}
-                                <button onClick={handleForm} className="text-black cursor-pointer hover:text-gray-700 font-extrabold">FORMS</button>
                             </div>
                             <div className="md:hidden flex">
                                 <span className="lg:hidden block lg:text-center lg:w-full lg:text-4xl text-sm font-bold text-black whitespace-nowrap py-1 relative top-[0.5rem]">
-                                    Coastal Regulation Zone
+                                    {t('coastalRegulationZone')}
                                 </span>
                                 <button
                                     onClick={handleToggle}
@@ -115,14 +139,13 @@ const Navbar = () => {
                             </div>
                         </div>
                     </div>
-                    {logged && (
+                    {logged ? (
                         <div className="text-white bg-blue-600  rounded-lg relative top-[-1.5rem]">
-                            <button onClick={handleLogout} className="lg:text-lg text-[0.5rem] p-2 font-extraboldcursor-pointer whitespace-nowrap">Sign Out</button>
+                            <button onClick={handleLogout} className="lg:text-lg text-[0.5rem] p-2 font-extraboldcursor-pointer whitespace-nowrap">{t('signOut')}</button>
                         </div>
-                    )}
-                    {!logged && (
+                    ) : (
                         <div className="text-white bg-blue-600 rounded-lg relative top-[-1.5rem]">
-                            <button onClick={handleLogin} className="lg:text-lg text-[0.5rem] p-2 font-extrabold cursor-pointer whitespace-nowrap">Sign In</button>
+                            <button onClick={handleLogin} className="lg:text-lg text-[0.5rem] p-2 font-extrabold cursor-pointer whitespace-nowrap">{t('signIn')}</button>
                         </div>
                     )}
                 </div>
@@ -132,12 +155,26 @@ const Navbar = () => {
                         ref={dropdownRef}
                     >
                         <button onClick={handleToggle}><img src={crossmark} alt='cross' className='h-10 px-2' /></button>
-                        <button onClick={handleGoHome} className="text-black cursor-pointer hover:text-gray-700 font-extrabold">HOME</button>
-                                <button onClick={handleAbout} className="text-black cursor-pointer hover:text-gray-700 font-extrabold">ABOUT US</button>
-                                <button onClick={handleNewAppl} className="text-black cursor-pointer hover:text-gray-700 font-extrabold">NEW APPLICATION</button>
-                                <button onClick={handlePrevAppl} className="text-black cursor-pointer hover:text-gray-700 font-extrabold">PENDING/PREVIOUS APPLICATION</button>
-                                <button onClick={handleForm} className="text-black cursor-pointer hover:text-gray-700 font-extrabold">FORMS</button>
 
+                        {role !== 'ADMIN' ? (
+                            <>
+                                <button onClick={handleGoHome} className="text-black cursor-pointer hover:text-gray-700 font-extrabold">{t('home')}</button>
+                                <button onClick={handleAbout} className="text-black cursor-pointer hover:text-gray-700 font-extrabold">{t('aboutUs')}</button>
+                                <button onClick={handleNewAppl} className="text-black cursor-pointer hover:text-gray-700 font-extrabold">{t('newApplication')}</button>
+                                <button onClick={handlePrevAppl} className="text-black cursor-pointer hover:text-gray-700 font-extrabold">{t('pendingPreviousApplication')}</button>
+                                {/* <button onClick={handleViewAppl} className="text-black cursor-pointer hover:text-gray-700 font-extrabold">{t('viewApplication')}</button>
+                                        <button onClick={handleUpdateAppl} className="text-black cursor-pointer hover:text-gray-700 font-extrabold">{t('updateApplication')}</button> */}
+                                <button onClick={handleForm} className="text-black cursor-pointer hover:text-gray-700 font-extrabold">{t('forms')}</button>
+                            </>
+                        ) : (
+                            <>
+                                <button onClick={handleAdmin} className="text-black cursor-pointer hover:text-gray-700 font-extrabold">Home</button>
+                                <button onClick={() => navigate('/resiConversion')} className="text-black cursor-pointer hover:text-gray-700 font-extrabold">Residential Conversion</button>
+                                <button onClick={() => navigate('/resiConstruction')} className="text-black cursor-pointer hover:text-gray-700 font-extrabold">Residential Construction</button>
+                                <button onClick={() => navigate('/commConversion')} className="text-black cursor-pointer hover:text-gray-700 font-extrabold">Commercial Conversion</button>
+                                <button onClick={() => navigate('/commConstruction')} className="text-black cursor-pointer hover:text-gray-700 font-extrabold">Commercial Construction</button>
+                            </>
+                        )}
                     </div>
                 )}
             </nav>
