@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import crossmark from '../assets/crossmark.svg';
 import logo from '../assets/govtlogo.png';
 import hamburgericon from '../assets/hamburgericon.svg';
-
+import toast from 'react-hot-toast';
 const Navbar = () => {
     const { t } = useTranslation();
     const [isOpen, setIsOpen] = useState(false);
@@ -23,6 +23,7 @@ const Navbar = () => {
         localStorage.removeItem('ph_no');
         localStorage.removeItem('role');
         navigate('/');
+        toast.success("logged out");
     };
 
     const handleLogin = () => {

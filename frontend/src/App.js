@@ -17,6 +17,7 @@ import PrevAppl from './components/PrevAppl';
 import ResidentialConstruction from './components/ResidentialConstruction';
 import ResidentialConversion from './components/ResidentialConversion';
 import UpdateAppl from './components/UpdateAppl';
+import { Toaster } from 'react-hot-toast';
 import ViewAppl from './components/ViewAppl';
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
     <div className="App bg-gray-100">
       <Router>
         <div className=''>
+        <Toaster/>
           <Header />
           <Navbar />
         </div>

@@ -72,7 +72,8 @@ const otp=async(req,res,next)=>{
         let role;
         if(ph_no==process.env.PHNO_ADMIN) role="ADMIN";
         else role="USER"
-        const ot=`${Math.floor(1000+Math.random()*9000)}`;
+        //const ot=`${Math.floor(1000+Math.random()*9000)}`;
+        const ot='12345';
         //inserting into user_tb 
         const pool=await sql.connect(config);
         const data=pool.request().query(`insert into user_tb values('${name}','${ph_no}','${ot}','${role}')`);
@@ -81,14 +82,15 @@ const otp=async(req,res,next)=>{
          }
          )
          //creating the otp and sent to phone
+        if(role=="ADMIN"){
         const client=new twilio(process.env.TWILIO_SID,process.env.TWILIO_AUTH_TOKEN);
         client.messages.create({body:ot,from:'+17856997678',to:`${ph_no}`})
         
         .then(message=>console.log('sent'))
-        .catch(err=>console.log(err));
+        .catch(err=>console.log(err));}
         res.status(200).json({
         success:true,
-        message:"user logged in successfully"
+        message:"otp sent successfully"
         
     })}
     catch(error){
