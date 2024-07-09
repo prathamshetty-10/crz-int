@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import usericon from '../assets/usericon.svg';
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 const Login = () => {
     const [name, setName] = useState('');
@@ -32,7 +33,8 @@ const Login = () => {
             if (!response.ok) {
                 throw new Error('Failed to send OTP');
             }
-
+            
+            toast.success("OTP sent successfully 12345");
             setOtpSent(true);
             setErrors({});
             console.log('OTP sent successfully');
@@ -70,6 +72,7 @@ const Login = () => {
             
             
             console.log('Logged in successfully');
+            toast.success('Logged in successfully');
             navigate('/');
         } catch (error) {
             console.error('Error logging in:', error);

@@ -11,12 +11,13 @@ import NewAppl from './components/NewAppl';
 import PrevAppl from './components/PrevAppl';
 import ViewAppl from './components/ViewAppl';
 import UpdateAppl from './components/UpdateAppl';
-
+import { Toaster } from 'react-hot-toast';
 function App() {
   return (
     <div className="App bg-gray-100">
       <Router>
         <div className=''>
+        <Toaster/>
           <Header />
           <Navbar />
         </div>
