@@ -1,5 +1,5 @@
 ﻿# CRZ 🙌(Work In Progress)
-Note: Refer https://github.com/aaaaryaaa/crz-works for the final code
+- Note: Refer https://github.com/aaaaryaaa/crz-works for the final code
 The Coastal Regulation Zone (CRZ) Web App is a digital solution developed and optimized to streamline the process of obtaining construction and convertion clearances for coastal land in the Udupi District. This project was undertaken for the Udupi District Deputy Commissioner's Office with a primary focus on enhancing user experience and accessibility, particularly for the elderly population.
 
 
